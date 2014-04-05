@@ -1,4 +1,4 @@
-#include <fstream> 
+#include <fstream>
 #include <map>
 #include <vector>
 #include <string>
@@ -64,6 +64,7 @@ occurrence() {
 string
 current_time() {
 
+  // change to use plain old unix time
   chrono::time_point<chrono::system_clock> now;
   now = chrono::system_clock::now();
   time_t time_now = chrono::system_clock::to_time_t(now);
@@ -94,7 +95,7 @@ write_to_file(Logjam & lp) {
   for (uint64_t i=1; i<entry_count; ++i) {
     of << time << ": " << lp.pattern << "\n";
   }
-  // log entry count to syslog
+  // TODO: log entry count to syslog
   of.close();
 }
 
@@ -124,7 +125,7 @@ write_pid_file(int pid) {
   pidfile << pid << endl;
   pidfile.close();
 }
-  
+
 
 void
 close_open_fd() {
@@ -175,9 +176,10 @@ logjam() {
   daemonize();
 
   while(1) {
+    // TODO: randomize sleep time
     sleep(30);
     write_to_logs(logfiles);
-  } 
+  }
 }
 
 
